@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - checkout
-
+      - setup_remote_docker
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -36,3 +36,15 @@ jobs:
       # run tests!
       - run: yarn ng build --prod
       - run: yarn ng test --single-run
+
+      - run:
+          command:
+            docker build -t ghoul007/hello:latest .
+
+      - run:
+          command:
+            docker login --username $DOCKER_USER --password $DOCKER_PASS ***
+
+      - run:
+          command:
+            docker push ghoul007/hello:latest
